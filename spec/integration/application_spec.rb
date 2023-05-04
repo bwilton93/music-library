@@ -31,6 +31,7 @@ describe Application do
 
       expect(response.status).to eq 200
       expect(response.body).to include('<a href="/">Home</a>')
+      expect(response.body).to include('<a href="/albums/new">New Album</a>')
       expect(response.body).to include('<h1>Albums</h1>')
       expect(response.body).to include('<div>')
       expect(response.body).to include('Title: <a href="/albums/1">Doolittle</a>')
@@ -93,6 +94,7 @@ describe Application do
           
           expect(response.status).to eq(200)
           expect(response.body).to include('<a href="/">Home</a>')
+          expect(response.body).to include('<a href="/artists/new">New Artist</a>')
           expect(response.body).to include('<h1>Artists</h1>')
           expect(response.body).to include('<div>')
           expect(response.body).to include('Name: <a href="/artists/1">Pixies</a>')
