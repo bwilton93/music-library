@@ -14,6 +14,10 @@ class Application < Sinatra::Base
     also_reload 'lib/artist_repository'
   end
   
+  get '/' do
+    return erb(:index)
+  end
+
   post '/albums' do
     if invalid_album_parameters?
       status 400

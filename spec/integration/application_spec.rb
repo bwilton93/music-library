@@ -17,7 +17,7 @@ describe Application do
 
   context "GET /" do
     it "returns the index page" do
-    respone = get('/')
+    response = get('/')
 
     expect(response.status).to eq 200
     expect(response.body).to include('<a href="/albums">Albums</a>')
