@@ -15,11 +15,22 @@ describe Application do
   # class so our tests work.
   let(:app) { Application.new }
 
+  context "GET /" do
+    it "returns the index page" do
+    respone = get('/')
+
+    expect(response.status).to eq 200
+    expect(response.body).to include('<a href="/albums">Albums</a>')
+    expect(response.body).to include('<a href="/artists">Artists</a>')
+    end
+  end
+
   context "GET /albums" do
     it "outputs a list of all albums HTML formatted" do
       response = get('/albums')
 
       expect(response.status).to eq 200
+      expect(response.body).to include('<a href="/">Home</a>')
       expect(response.body).to include('<h1>Albums</h1>')
       expect(response.body).to include('<div>')
       expect(response.body).to include('Title: <a href="/albums/1">Doolittle</a>')
@@ -40,11 +51,11 @@ describe Application do
       expect(response.body).to include ('Artist: Pixies')      
     end
   end
-
+  
   context "GET /albums/new" do
     it "returns the form page to add a new album" do
       response = get('/albums/new')
-
+      
       expect(response.status).to eq 200
       expect(response.body).to include('<form action="/albums" method="POST">')
       expect(response.body).to include("<h1>Add an album</h1>")
@@ -52,39 +63,40 @@ describe Application do
       expect(response.body).to include('<input type="number" id="release year" name="release_year">')
     end
   end
-
+  
   context "POST /albums" do
     it "returns a success page" do
       response = post(
         '/albums',
         title: 'Ice, Death, Planets, Lungs, Mushrooms And Lava',
         release_year: '2022'
-      )
-
-      expect(response.status).to eq 200
-      expect(response.body).to include("<p>Album successfully created</p>")
-    end
-
-    it "returns 400" do
-      response = post(
-        '/albums',
-        title: '',
-        release_year: ''
-      )
-
-      expect(response.status).to eq 400
-    end
-  end
-
-  context "GET /artists" do
-    it "returns 200 OK" do
-      response = get('/artists')
+        )
+        
+        expect(response.status).to eq 200
+        expect(response.body).to include("<p>Album successfully created</p>")
+      end
       
-      expect(response.status).to eq(200)
-      expect(response.body).to include('<h1>Artists</h1>')
-      expect(response.body).to include('<div>')
-      expect(response.body).to include('Name: <a href="/artists/1">Pixies</a>')
-      expect(response.body).to include('Genre: Rock')
+      it "returns 400" do
+        response = post(
+          '/albums',
+          title: '',
+          release_year: ''
+          )
+          
+          expect(response.status).to eq 400
+        end
+      end
+      
+      context "GET /artists" do
+        it "returns 200 OK" do
+          response = get('/artists')
+          
+          expect(response.status).to eq(200)
+          expect(response.body).to include('<a href="/">Home</a>')
+          expect(response.body).to include('<h1>Artists</h1>')
+          expect(response.body).to include('<div>')
+          expect(response.body).to include('Name: <a href="/artists/1">Pixies</a>')
+          expect(response.body).to include('Genre: Rock')
       expect(response.body).to include('Name: <a href="/artists/4">Nina Simone</a>')
       expect(response.body).to include('Genre: Pop')
     end
